@@ -1,0 +1,198 @@
+# names of hurricanes
+names = ['Cuba I', 'San Felipe II Okeechobee', 'Bahamas', 'Cuba II', 'CubaBrownsville', 'Tampico', 'Labor Day', 'New England', 'Carol', 'Janet', 'Carla', 'Hattie', 'Beulah', 'Camille', 'Edith', 'Anita', 'David', 'Allen', 'Gilbert', 'Hugo', 'Andrew', 'Mitch', 'Isabel', 'Ivan', 'Emily', 'Katrina', 'Rita', 'Wilma', 'Dean', 'Felix', 'Matthew', 'Irma', 'Maria', 'Michael']
+
+# months of hurricanes
+months = ['October', 'September', 'September', 'November', 'August', 'September', 'September', 'September', 'September', 'September', 'September', 'October', 'September', 'August', 'September', 'September', 'August', 'August', 'September', 'September', 'August', 'October', 'September', 'September', 'July', 'August', 'September', 'October', 'August', 'September', 'October', 'September', 'September', 'October']
+
+# years of hurricanes
+years = [1924, 1928, 1932, 1932, 1933, 1933, 1935, 1938, 1953, 1955, 1961, 1961, 1967, 1969, 1971, 1977, 1979, 1980, 1988, 1989, 1992, 1998, 2003, 2004, 2005, 2005, 2005, 2005, 2007, 2007, 2016, 2017, 2017, 2018]
+
+# maximum sustained winds (mph) of hurricanes
+max_sustained_winds = [165, 160, 160, 175, 160, 160, 185, 160, 160, 175, 175, 160, 160, 175, 160, 175, 175, 190, 185, 160, 175, 180, 165, 165, 160, 175, 180, 185, 175, 175, 165, 180, 175, 160]
+
+# areas affected by each hurricane
+areas_affected = [['Central America', 'Mexico', 'Cuba', 'Florida', 'The Bahamas'], ['Lesser Antilles', 'The Bahamas', 'United States East Coast', 'Atlantic Canada'], ['The Bahamas', 'Northeastern United States'], ['Lesser Antilles', 'Jamaica', 'Cayman Islands', 'Cuba', 'The Bahamas', 'Bermuda'], ['The Bahamas', 'Cuba', 'Florida', 'Texas', 'Tamaulipas'], ['Jamaica', 'Yucatn Peninsula'], ['The Bahamas', 'Florida', 'Georgia', 'The Carolinas', 'Virginia'], ['Southeastern United States', 'Northeastern United States', 'Southwestern Quebec'], ['Bermuda', 'New England', 'Atlantic Canada'], ['Lesser Antilles', 'Central America'], ['Texas', 'Louisiana', 'Midwestern United States'], ['Central America'], ['The Caribbean', 'Mexico', 'Texas'], ['Cuba', 'United States Gulf Coast'], ['The Caribbean', 'Central America', 'Mexico', 'United States Gulf Coast'], ['Mexico'], ['The Caribbean', 'United States East coast'], ['The Caribbean', 'Yucatn Peninsula', 'Mexico', 'South Texas'], ['Jamaica', 'Venezuela', 'Central America', 'Hispaniola', 'Mexico'], ['The Caribbean', 'United States East Coast'], ['The Bahamas', 'Florida', 'United States Gulf Coast'], ['Central America', 'Yucatn Peninsula', 'South Florida'], ['Greater Antilles', 'Bahamas', 'Eastern United States', 'Ontario'], ['The Caribbean', 'Venezuela', 'United States Gulf Coast'], ['Windward Islands', 'Jamaica', 'Mexico', 'Texas'], ['Bahamas', 'United States Gulf Coast'], ['Cuba', 'United States Gulf Coast'], ['Greater Antilles', 'Central America', 'Florida'], ['The Caribbean', 'Central America'], ['Nicaragua', 'Honduras'], ['Antilles', 'Venezuela', 'Colombia', 'United States East Coast', 'Atlantic Canada'], ['Cape Verde', 'The Caribbean', 'British Virgin Islands', 'U.S. Virgin Islands', 'Cuba', 'Florida'], ['Lesser Antilles', 'Virgin Islands', 'Puerto Rico', 'Dominican Republic', 'Turks and Caicos Islands'], ['Central America', 'United States Gulf Coast (especially Florida Panhandle)']]
+
+# damages (USD($)) of hurricanes
+damages = ['Damages not recorded', '100M', 'Damages not recorded', '40M', '27.9M', '5M', 'Damages not recorded', '306M', '2M', '65.8M', '326M', '60.3M', '208M', '1.42B', '25.4M', 'Damages not recorded', '1.54B', '1.24B', '7.1B', '10B', '26.5B', '6.2B', '5.37B', '23.3B', '1.01B', '125B', '12B', '29.4B', '1.76B', '720M', '15.1B', '64.8B', '91.6B', '25.1B']
+
+# deaths for each hurricane
+deaths = [90,4000,16,3103,179,184,408,682,5,1023,43,319,688,259,37,11,2068,269,318,107,65,19325,51,124,17,1836,125,87,45,133,603,138,3057,74]
+
+# 1
+# Update Recorded Damages
+conversion = {"M": 1000000,
+              "B": 1000000000}
+
+# test function by updating damages
+damages_updated = []
+for each in damages:
+  if each == "Damages not recorded":
+    damages_updated.append(each)
+  if each[-1] in conversion:
+    new_values = float(each[:-1])*conversion[each[-1]]
+    damages_updated.append(new_values)
+print("Print updated damages")
+print(damages_updated)
+print("\n")
+
+# 2 
+# Create a Table
+hurricanes_dictionary = {}
+# Create and view the hurricanes dictionary
+def create_hurricanes_dictionary(names, months, years, max_sustained_winds, areas_affected, damages, deaths):
+  for i in range(len(names)):
+    hurricanes_dictionary[names[i]] = {"Name": names[i], "Month": months[i], "Year": years[i], "Max Sustained Wind": max_sustained_winds[i], "Areas Affected": areas_affected[i], "Damage": damages_updated[i], "Deaths": deaths[i]}
+  return hurricanes_dictionary
+
+print("Print hurricanes dictionary")
+print(create_hurricanes_dictionary(names, months, years, max_sustained_winds, areas_affected, damages, deaths))
+print("\n")
+print("Let's see information of Felix")
+print(hurricanes_dictionary["Felix"])
+print("\n")
+# 3
+# Organizing by Year
+# create a new dictionary of hurricanes with year and key
+
+print('print hurricanes dictionary by year')
+year_dict = {}
+def organizing_by_year(hurricanes_dictionary):
+    for hurricanes in hurricanes_dictionary:
+      current_year = hurricanes_dictionary[hurricanes]["Year"]
+      current_cane = hurricanes_dictionary[hurricanes]
+      if (not current_year in year_dict):
+        year_dict[current_year] = [current_cane]
+      else:
+        year_dict[current_year].append(current_cane)
+    return year_dict
+print(organizing_by_year(hurricanes_dictionary))
+print("\n")
+
+# 4
+# Counting Damaged Areas
+# create dictionary of areas to store the number of hurricanes involved in
+areas_affected = {}
+def count_affected_areas(dict):
+    for name in dict:
+        for area in dict[name]['Areas Affected']:
+            if area in areas_affected:
+                areas_affected[area] += 1
+            else:
+                areas_affected[area] = 1
+    return areas_affected
+print("Counting hurricanes frequency in each area")
+print(count_affected_areas(hurricanes_dictionary))
+print("\n")
+# 5 
+# Calculating Maximum Hurricane Count
+# find most frequently affected area and the number of hurricanes involved in
+def counting_max_area(dict):
+  max_area = list(areas_affected.keys())[0]
+  max_area_count = list(areas_affected.values())[0]
+  for item in dict:
+    frequency = dict[item]
+    if frequency > max_area_count:
+      max_area = dict[item].keys()
+      max_area_count = frequency
+  return "Max area: " + max_area + " with " + str(max_area_count) + " hurricanes."
+print(counting_max_area(areas_affected))
+print("\n")
+
+# 6
+# Calculating the Deadliest Hurricane
+# find highest mortality hurricane and the number of deaths
+def find_most_deadly(dict):
+  most_deadly = "ABC"
+  most_deadly_count = 0
+  for each in dict:
+    current_cane = dict[each]["Name"]
+    current_death_count = dict[each]["Deaths"]
+    if current_death_count > most_deadly_count:
+      most_deadly_count = current_death_count
+      most_deadly = current_cane
+  return most_deadly + " is the most deadly hurricane which created " + str(most_deadly_count) + " deaths."
+print(find_most_deadly(hurricanes_dictionary))
+print("\n")
+
+
+
+
+# 7
+# Rating Hurricanes by Mortality
+# categorize hurricanes in new dictionary with mortality severity as key
+print("Rating hurriances by death number")
+mortality_scale = {0: 0, 1: 100, 2: 500, 3: 1000, 4: 10000}
+hurricanes_by_mortality = {0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
+def rating_hurricanes(dict):
+  for name in dict:
+    dead = dict[name]["Deaths"]
+    if dead < mortality_scale[0]:
+      hurricanes_by_mortality[0].append(name)
+    elif dead < mortality_scale[1]:
+      hurricanes_by_mortality[1].append(name)
+    elif dead < mortality_scale[2]:
+      hurricanes_by_mortality[2].append(name)
+    elif dead < mortality_scale[3]:
+      hurricanes_by_mortality[3].append(name)
+    elif dead < mortality_scale[4]:
+      hurricanes_by_mortality[4].append(name)
+  return hurricanes_by_mortality
+print(rating_hurricanes(hurricanes_dictionary))
+print("\n")
+
+# 8 Calculating Hurricane Maximum Damage
+# find highest damage inducing hurricane and its total cost
+print("Recorded damage of each hurricane")
+damages_recorded={}
+def record_damage(dict):
+  for each in dict:
+    if dict[each]["Damage"]!="Damages not recorded":
+      damages_recorded[each] = dict[each]["Damage"]
+  return damages_recorded
+print(record_damage(hurricanes_dictionary))
+print("\n")
+
+def find_most_damage(dict):
+  most_damage = "ABC"
+  most_damage_count = 0
+  for each in dict:
+    current_cane = each
+    current_damage_count = dict[each]
+    if current_damage_count > most_damage_count:
+      most_damage = current_cane
+      most_damage_count = current_damage_count
+  return most_damage + " created the most damage which costed USD " + str(most_damage_count)
+print(find_most_damage(damages_recorded))
+print("\n")
+
+# 9
+# Rating Hurricanes by Damage
+print("Rating hurricanes by damages")
+damage_scale = {0: 0,
+                 1: 100000000,
+                2: 1000000000,
+                3: 10000000000,
+                4: 50000000000}
+    
+# categorize hurricanes in new dictionary with damage severity as key
+damage_scale_hurricane = {'No record': [], 0: [], 1: [], 2: [], 3: [], 4: [], 5: []}
+def rating_hurricane_by_damage(dict):
+  for each in dict:
+    if dict[each]["Damage"] == 'Damages not recorded':
+      damage_scale_hurricane["No record"].append(each)
+    elif dict[each]["Damage"] == 0:
+      damage_scale_hurricane[0].append(each)
+    elif dict[each]["Damage"] <= 100000000:
+      damage_scale_hurricane[1].append(each)
+    elif dict[each]["Damage"] <= 1000000000:
+      damage_scale_hurricane[2].append(each)
+    elif dict[each]["Damage"] <= 10000000000:
+      damage_scale_hurricane[3].append(each)
+    elif dict[each]["Damage"] <= 50000000000:
+      damage_scale_hurricane[4].append(each)
+    else:
+      damage_scale_hurricane[5].append(each)
+  return damage_scale_hurricane
+print(rating_hurricane_by_damage(hurricanes_dictionary))
+
