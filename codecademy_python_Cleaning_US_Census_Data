@@ -1,0 +1,96 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import codecademylib3_seaborn
+import glob
+
+files = glob.glob('states*.csv')
+
+data_list = []
+
+for filename in files:
+  data = pd.read_csv(filename)
+  data_list.append(data)
+
+us_census = pd.concat(data_list).reset_index(drop = True)
+
+# Clean column "income" - remove "$"
+us_census.Income = us_census.Income.str.replace('$','')
+us_census.Income = pd.to_numeric(us_census.Income)
+genderpop_split = us_census.GenderPop.str.split("_")
+us_census['Men'] = genderpop_split.str.get(0)
+us_census['Women'] = genderpop_split.str.get(1)
+us_census.Men = us_census.Men.str.strip('M')
+us_census.Women = us_census.Women.str.strip('F')
+us_census.Men = pd.to_numeric(us_census.Men)
+us_census.Women = pd.to_numeric(us_census.Women)
+us_census.Women.fillna(us_census.TotalPop - us_census.Men, inplace = True)
+us_census = us_census.drop(columns = ['Unnamed: 0', 'GenderPop'])
+us_census = us_census.drop_duplicates()
+#plt.scatter(us_census.Women, us_census.Income)
+#plt.show() 
+
+#remove % from race-related columns
+us_census.Hispanic = us_census.Hispanic.str.strip("%")
+us_census.White = us_census.White.str.strip("%")
+us_census.Black = us_census.Black.str.strip("%")
+us_census.Native = us_census.Native.str.strip("%")
+us_census.Asian = us_census.Asian.str.strip("%")
+us_census.Pacific = us_census.Pacific.str.strip("%")
+
+#convert columns which object to number
+us_census.Hispanic = pd.to_numeric(us_census.Hispanic)
+us_census.White = pd.to_numeric(us_census.White)
+us_census.Black = pd.to_numeric(us_census.Black)
+us_census.Native = pd.to_numeric(us_census.Native)
+us_census.Asian = pd.to_numeric(us_census.Asian)
+us_census.Pacific = pd.to_numeric(us_census.Pacific)
+
+# fill na for column Pacific by calculation
+us_census['Pacific'] = us_census['Pacific'].fillna(100 - (us_census['Hispanic'] +us_census['Black']+us_census['White']+us_census['Native']+us_census['Asian']  ))
+
+# remove duplication from the dataframe
+us_census = us_census.drop_duplicates()
+
+# draw histogram for each
+plt.figure('Hispanic')
+plt.hist(us_census.Hispanic, bins = 20)
+plt.title('Hispanic Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
+
+plt.figure('White')
+plt.hist(us_census.White, bins = 20)
+plt.title('White Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
+
+plt.figure('Black')
+plt.hist(us_census.Black, bins = 20)
+plt.title('Black Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
+
+plt.figure('Native')
+plt.hist(us_census.Native, bins = 20)
+plt.title('Native Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
+
+plt.figure('Asian')
+plt.hist(us_census.Asian, bins = 20)
+plt.title('Asian Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
+
+plt.figure('Pacific')
+plt.hist(us_census.Pacific, bins = 20)
+plt.title('Pacific Percentage in State Population')
+plt.xlabel('Population Percentage in State')
+plt.ylabel('No. of State')
+plt.show()
