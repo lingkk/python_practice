@@ -1,0 +1,238 @@
+import codecademylib3_seaborn
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# load rankings data here:
+wood = pd.read_csv("Golden_Ticket_Award_Winners_Wood.csv")
+steel = pd.read_csv('Golden_Ticket_Award_Winners_Steel.csv')
+
+wood.rename(columns = {
+  "Supplier" : "supplier",
+  "Rank" : "rank_s",
+  "Name" : "name",
+  "Park" : "park",
+  "Location" : "location",
+  "Year Built" : "year_built",
+  "Points" : "points",
+  "Year of Rank" : "year_of_rank"
+}, inplace = True)
+
+steel.rename(columns = {
+  "Supplier" : "supplier",
+  "Rank" : "rank_s",
+  "Name" : "name",
+  "Park" : "park",
+  "Location" : "location",
+  "Year Built" : "year_built",
+  "Points" : "points",
+  "Year of Rank" : "year_of_rank"
+}, inplace = True)
+
+
+print (wood.head())
+print (steel.head())
+
+# write function to plot rankings over time for 1 roller coaster here:
+def coaster_ranking(coaster_name, park_name, material):
+  if material == 'wood':
+    select_all_coaster_datas = wood[(wood.name == coaster_name) & (wood.park == park_name)]
+    
+  if material == "steel":
+    select_all_coaster_datas = steel[(steel.name == coaster_name) & (steel.park == park_name)]
+    
+  #if (material != "wood") & (material !="steel"):
+    #print("error in materials/Can't find rollar coaster")
+    
+  x_values = select_all_coaster_datas.year_of_rank
+  y_values = select_all_coaster_datas.rank_s
+  outcome = plt.figure(figsize = (10,8))
+  plt.plot(range(len(x_values)), y_values, marker = "o", linewidth = 2, color = "green")
+  ax = plt.subplot()
+  ax.set_xticks(range(len(x_values)))
+  ax.set_xticklabels(x_values)
+  ax.invert_yaxis()
+  plt.xlabel("Year of Ranking")
+  plt.ylabel("Ranking")
+  plt.title("Ranking for " + coaster_name + " Over Time")
+  plt.show()
+
+  
+coaster_ranking("El Toro", "Six Flags Great Adventure", "wood")
+
+
+
+
+plt.clf()
+
+# write function to plot rankings over time for 2 roller coasters here:
+
+def coaster_rankings(coaster_name1, park_name1, material1, coaster_name2, park_name2, material2):
+  if material1 == 'wood':
+    select_all_coaster_datas1 = wood[(wood.name == coaster_name1) & (wood.park == park_name1)]
+  if material2 == "wood":
+    select_all_coaster_datas2 = wood[(wood.name == coaster_name2) & (wood.park == park_name2)]
+    
+  if material1 == "steel":
+    select_all_coaster_datas1 = steel[(steel.name == coaster_name1) & (steel.park == park_name1)]
+  if material2 == "steel":
+    select_all_coaster_datas2 = steel[(steel.name == coaster_name2) & (steel.park == park_name2)]
+    
+  #Now plot the first line.   
+  x_values1 = select_all_coaster_datas1.year_of_rank
+  y_values1 = select_all_coaster_datas1.rank_s
+  plt.figure(figsize = (10,8))
+  plt.plot(range(len(x_values1)), y_values1, marker = "o", linewidth = 2, label = coaster_name1)
+  ax = plt.subplot()
+  ax.set_xticks(range(len(x_values1)))
+  ax.set_xticklabels(x_values1)
+  ax.invert_yaxis()
+  plt.xlabel("Year of Ranking")
+  plt.ylabel("Ranking")
+  plt.title("Ranking for Two Roller Coaster Over Time")
+  
+  
+  #Now plot the second line.
+  x_values2 = select_all_coaster_datas2.year_of_rank
+  y_values2 = select_all_coaster_datas2.rank_s
+  plt.plot(range(len(x_values2)), y_values2, marker = "o", linewidth = 2, label = coaster_name2)
+  
+  plt.legend()
+  plt.show()
+
+  
+coaster_rankings("El Toro", "Six Flags Great Adventure", "wood", "Boulder Dash", "Lake Compounce", "wood")
+
+
+
+
+plt.clf()
+
+# write function to plot top n rankings over time here:
+def plot_top_n(material, n):
+  #Select all the datas that are top n.
+  top_n_rankings = material[material.rank_s <= n]
+  #Select one specific roller coaster's datas.
+  for one_roller_coaster_name in set(top_n_rankings.name):
+      one_roller_coaster_datas = top_n_rankings[top_n_rankings.name == one_roller_coaster_name]
+      plt.plot(one_roller_coaster_datas.year_of_rank, one_roller_coaster_datas.rank_s, marker = "o", label = one_roller_coaster_name)
+  plt.legend()
+  plt.title("Top " + str(n) + " Roller Coasters' Rankings")
+  plt.xlabel("Year of Rank")
+  plt.ylabel("Rankings")
+  ax = plt.subplot()
+  ax.invert_yaxis()
+  plt.show()
+
+
+plot_top_n(wood, 5)
+
+
+
+
+
+
+plt.clf()
+
+# load roller coaster data here:
+
+roller_coasters = pd.read_csv("roller_coasters.csv")
+print (roller_coasters.head())
+
+# write function to plot histogram of column values here:
+
+def plot_a_hist(dataframe, the_column):
+  datas_from_the_column_to_plot = dataframe[the_column]
+  plt.hist(datas_from_the_column_to_plot.dropna(), normed = True)
+  plt.title("The Distribution of " + the_column + " for Roller Coasters")
+  plt.xlabel(the_column)
+  plt.ylabel("Frequency")
+  plt.show()
+
+plot_a_hist(roller_coasters, "speed")
+plot_a_hist(roller_coasters, "height")
+plot_a_hist(roller_coasters, "length")
+plot_a_hist(roller_coasters, "num_inversions")
+
+
+#plot the histogram for height
+def plot_hist_for_height(dataframe):
+  datas_of_height = dataframe.height
+  percentile_90th = np.percentile(datas_of_height, 90)
+  percentile_10th = np.percentile(datas_of_height, 10)
+  modified_datas_of_height = datas_of_height[(datas_of_height <= percentile_90th) & (datas_of_height >= percentile_10th)] 
+  plt.hist(modified_datas_of_height, normed = True)
+  plt.axis([10, (percentile_90th+50), 0, 0.6])
+  plt.title("The Distribution of Height for Roller Coasters")
+  plt.xlabel("Height")
+  plt.ylabel("Frequency")
+  plt.show()
+
+plot_hist_for_height(roller_coasters)
+
+plt.clf()
+
+# write function to plot inversions by coaster at a park here:
+
+def plot_num_inversions_at_an_amusement_park(dataframe, park_name):
+  datas_of_a_park = dataframe[dataframe.park == park_name]
+  datas_of_num_inversions = datas_of_a_park.num_inversions
+  roller_coaster_name = datas_of_a_park.name
+  plt.bar(range(len(roller_coaster_name)), datas_of_num_inversions)
+                 
+  plt.title("Number of Inversions for each Roller Coaster")
+  plt.xlabel("Roller Coaster Name")
+  plt.ylabel("Number of Inversions")
+  ax = plt.subplot()
+  ax.set_xticks(range(len(roller_coaster_name)))
+  ax.set_xticklabels(roller_coaster_name, rotation = 90)
+  plt.show()
+
+plot_num_inversions_at_an_amusement_park(roller_coasters, "Parc Asterix")
+
+
+
+
+
+
+
+
+plt.clf()
+    
+# write function to plot pie chart of operating status here:
+
+def operating_vs_close(dataframe):
+  operating = dataframe[dataframe.status == "status.operating"]
+  closed = dataframe[dataframe.status == "status.closed.definitely"]
+  
+  number_of_operating = len(operating)
+  number_of_closed = len(closed)
+  plt.pie([number_of_operating, number_of_closed], autopct = "%1d%%")
+  plt.axis("equal")
+  plt.title("Current Running Condition for Roller Coasters")
+  plt.legend(["Operating", "Closed Definitely"])
+  plt.show()
+
+
+operating_vs_close(roller_coasters)  
+
+
+plt.clf()
+  
+# write function to create scatter plot of any two numeric columns here:
+
+def scatter_plot_for_two_colums(dataframe, column1, column2):
+  data_column1 = dataframe[column1]
+  data_column2 = dataframe[column2]
+  plt.scatter(data_column1, data_column2)
+  plt.title("Relationship between " + column1 + " and " + column2)
+  plt.xlabel(column1)
+  plt.ylabel(column2)
+  plt.show()
+
+
+
+scatter_plot_for_two_colums(roller_coasters, "length", "speed")
+
+
+plt.clf()
